@@ -1,0 +1,31 @@
+<% layout('./template/boilerplate') -%>
+
+   <body>
+      <div class="main">
+         <h2>All Listings</h2>
+         <div class="row row-cols-lg-3 row-cols-md-3">
+            <% for(let dataa of data){ %>
+
+               <a href="/alllisting/<%=dataa._id%>">
+                  <div class="cards">
+                     <img src="<%= dataa.image.url %>" class="card-img-top" alt="image" style="height: 22rem">
+                     <div class="card-body">
+                        <h5 class="card-title"><b>
+                              <%=dataa.title%>
+                           </b></h5>
+                        <p class="card-text"><b>Price:&#8377</b> <%=dataa.price.toLocaleString("en-IN")%> </p><br> 
+                        <form action="/alllisting/<%=dataa._id%>/delete?_method=DELETE" method="POST"><button
+                              class="btn btn-primary">delete</button></form>
+                     </div>
+                  </div>
+
+               </a>
+               <% } %>
+
+         </div>
+
+      </div>
+
+
+
+   </body>

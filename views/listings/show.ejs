@@ -1,0 +1,90 @@
+<% layout('./template/boilerplate') -%>
+
+    <body>
+        <div class="row offset-2">
+            <h1>Listing details</h1>
+            <div class="show-card" style="width: 18rem;">
+                <img src="<%=data.image.url%>" class="card-img-top" alt="image">
+            </div>
+            <div>
+                <p> <b>
+                        <%=data.title%>
+                    </b> </p>
+            </div>
+
+            <div>
+                <p>
+                    <%=data.description%>
+                </p>
+            </div>
+
+            <div>
+                <p> <b>&#8377</b><%=data.price.toLocaleString("en-IN")%></p>
+            </div>
+
+            <div>
+                <p>
+                    <%=data.location%>
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    <%=data.country%>
+                </p>
+            </div>
+            <form action="/alllisting/<%=data._id%>/edit">
+                <button class="btn btn-edit-submit btn-dark ">Edit</button>
+            </form><br><br>
+
+            <div class="mb-5 mt-3">
+                <form action="/alllisting/<%=data._id%>/review" method="post">
+                    <label for="rating">Rating</label>
+                    <input type="range" min="1" max="5" id="rating" name="review[rating]"><br>
+                    <label for="comment">Comment</label>
+                    <textarea name="review[comment]" id="comment" rows="5" cols="30"
+                        class="form-control"></textarea><br>
+                    <button type="submit" class="btn btn-edit-submit btn-dark">Submit</button>
+                </form>
+
+            </div>
+            <hr>
+            <div class="review">
+                <h4>All review</h4>
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    <%for(review of data.reviews){%>
+                         <div class="col">
+                            <div class="card col-5" style="width: 18rem;">
+
+                                <div class="cards card-body ">
+                                    <h5 class="card-title">Hanuman</h5>
+                                    <p class="card-text">
+                                    <p class="card-text">
+                                        <%=review.comment%>
+                                    </p>
+                                    <p class="card-text">
+                                        <%=review.rating%>
+                                    </p>
+
+                                    </p>
+                                </div>
+                            </div>
+                                <form class="mt-3" method="post" action="/alllisting/<%=data._id%>/<%=review._id%>?_method=DELETE">
+                            <button class="btn btn-small btn-dark">Delete</button>
+                         </form>
+
+                         </div>
+                     
+                            
+                            <%}%>
+                        </div>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+    </body>

@@ -26,6 +26,7 @@ const validate = (req, res, next) => {
 
 router.get("/", asyncWrap(async (req, res) => {
     const data = await listing.find({});
+    
     res.render("listings/index", { data });
 }))
 
@@ -44,7 +45,8 @@ router.post("/newlisting", validate, asyncWrap(async (req, res) => {
     delete listingData.url;
     console.log(listingData);
     const data = new listing(listingData);
-    await data.save();
+    await data.save(); 
+    req.flash("sucess","listing is created sucessfully");
     res.redirect("/alllisting");
 }));
 
@@ -55,6 +57,7 @@ router.get("/:id", asyncWrap(async (req, res) => {
     let { id } = req.params;
     const data = await listing.findOne({ _id: id }).populate("reviews");
     res.render("listings/show", { data });
+
 }));
 
 // SHOW EDIT PAGE
@@ -74,6 +77,7 @@ router.put("/:id", validate, asyncWrap(async (req, res) => {
     };
     delete listingData.url;
     let data = await listing.findByIdAndUpdate(id, listingData);
+    req.flash("sucess","Listing is updated sucessfully");
     res.redirect(`/alllisting/${id}`);
 }));
 
@@ -82,6 +86,7 @@ router.put("/:id", validate, asyncWrap(async (req, res) => {
 router.delete("/:id/delete", asyncWrap(async (req, res) => {
     let { id } = req.params;
     let data = await listing.findByIdAndDelete(id);
+    req.flash("sucess","Listing is deleted sucessfully");
     res.redirect("/alllisting");
 }));
 

@@ -4,6 +4,7 @@ const asyncWrap=require('../utility/asyncWrap');
 const listing=require("../model/listing.js");
 const schema = require('../model/listingSchemaValidate.js');
 const customError=require('../utility/customError');
+const {isAuthenticated}=require('../utility/isAuthenticate');
 
 // Validation
 
@@ -31,13 +32,13 @@ router.get("/", asyncWrap(async (req, res) => {
 }))
 
 // SHOWING NEW LISTING 
-router.get("/newlisting", (req, res) => {
+router.get("/newlisting",isAuthenticated ,(req, res) => {
     res.render("listings/newListing");
 })
 
 // CREATING NEW LISTING
 
-router.post("/newlisting", validate, asyncWrap(async (req, res) => {
+router.post("/newlisting", isAuthenticated , validate, asyncWrap(async (req, res) => {
     const listingData = req.body;
     listingData.image = {
         url: listingData.url || ""
@@ -62,14 +63,14 @@ router.get("/:id", asyncWrap(async (req, res) => {
 
 // SHOW EDIT PAGE
 
-router.get("/:id/edit", asyncWrap(async (req, res) => {
+router.get("/:id/edit",isAuthenticated ,asyncWrap(async (req, res) => {
     let { id } = req.params;
     let data = await listing.findById(id);
     res.render("listings/edit", { data });
 }));
 
 // UPDATING LISTING DATA:-
-router.put("/:id", validate, asyncWrap(async (req, res) => {
+router.put("/:id", isAuthenticated, validate ,asyncWrap(async (req, res) => {
     let { id } = req.params;
     const listingData = req.body;
     listingData.image = {
@@ -83,7 +84,7 @@ router.put("/:id", validate, asyncWrap(async (req, res) => {
 
 // DELETE LISTING
 
-router.delete("/:id/delete", asyncWrap(async (req, res) => {
+router.delete("/:id/delete", isAuthenticated ,asyncWrap(async (req, res) => {
     let { id } = req.params;
     let data = await listing.findByIdAndDelete(id);
     req.flash("sucess","Listing is deleted sucessfully");
